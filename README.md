@@ -7,7 +7,7 @@ basic input data are:
 (4) electrode coordinate
 
 system specific input data are:
-(1) basis set number the deleted part of device (in device hamiltonian)
+(1) basis set number the of deleted part of device (in device hamiltonian)
 (2) basis set number of the lead principle layer (in device hamiltonian)
 (3) total basis set number of the electrode (in electrode hamiltonian)
 
