@@ -1,0 +1,139 @@
+@SET project      TEST
+@SET fermi_level  -0.21881975146789
+@SET v_bias_volt  0.0
+@SET temperature  293.0
+
+@SET added_mos      1000
+@SET max_scf        800
+@SET eps_scf        1e-6
+
+@SET lx             40.0
+@SET ly             40.0
+
+&GLOBAL
+  PROJECT              ${project}
+  RUN_TYPE             ENERGY
+  PRINT_LEVEL          LOW
+&END GLOBAL
+
+&FORCE_EVAL
+  &DFT
+    &QS
+      METHOD DFTB
+      &DFTB
+        SELF_CONSISTENT    T
+        DO_EWALD           T
+        DISPERSION         T 
+        &PARAMETER
+          SK_FILE AU AU ../SK-auorg-1-1/Au-Au.skf 
+          SK_FILE AU H  ../SK-auorg-1-1/Au-H.skf 
+          SK_FILE AU C  ../SK-auorg-1-1/Au-C.skf 
+          SK_FILE AU N  ../SK-auorg-1-1/Au-N.skf 
+          SK_FILE AU O  ../SK-auorg-1-1/Au-O.skf 
+          SK_FILE AU S  ../SK-auorg-1-1/Au-S.skf 
+          SK_FILE H AU  ../SK-auorg-1-1/H-Au.skf 
+          SK_FILE H H   ../SK-auorg-1-1/H-H.skf 
+          SK_FILE H C   ../SK-auorg-1-1/H-C.skf 
+          SK_FILE H N   ../SK-auorg-1-1/H-N.skf 
+          SK_FILE H O   ../SK-auorg-1-1/H-O.skf 
+          SK_FILE H S   ../SK-auorg-1-1/H-S.skf 
+          SK_FILE C AU  ../SK-auorg-1-1/C-Au.skf 
+          SK_FILE C H   ../SK-auorg-1-1/C-H.skf 
+          SK_FILE C C   ../SK-auorg-1-1/C-C.skf 
+          SK_FILE C N   ../SK-auorg-1-1/C-N.skf 
+          SK_FILE C O   ../SK-auorg-1-1/C-O.skf 
+          SK_FILE C S   ../SK-auorg-1-1/C-S.skf 
+          SK_FILE N AU  ../SK-auorg-1-1/N-Au.skf 
+          SK_FILE N H   ../SK-auorg-1-1/N-H.skf 
+          SK_FILE N C   ../SK-auorg-1-1/N-C.skf 
+          SK_FILE N N   ../SK-auorg-1-1/N-N.skf 
+          SK_FILE N O   ../SK-auorg-1-1/N-O.skf 
+          SK_FILE N S   ../SK-auorg-1-1/N-S.skf 
+          SK_FILE O AU  ../SK-auorg-1-1/O-Au.skf 
+          SK_FILE O H   ../SK-auorg-1-1/O-H.skf 
+          SK_FILE O C   ../SK-auorg-1-1/O-C.skf 
+          SK_FILE O N   ../SK-auorg-1-1/O-N.skf 
+          SK_FILE O O   ../SK-auorg-1-1/O-O.skf 
+          SK_FILE O S   ../SK-auorg-1-1/O-S.skf 
+          SK_FILE S AU  ../SK-auorg-1-1/S-Au.skf 
+          SK_FILE S H   ../SK-auorg-1-1/S-H.skf 
+          SK_FILE S C   ../SK-auorg-1-1/S-C.skf 
+          SK_FILE S N   ../SK-auorg-1-1/S-N.skf 
+          SK_FILE S O   ../SK-auorg-1-1/S-O.skf 
+          SK_FILE S S   ../SK-auorg-1-1/S-S.skf 
+          UFF_FORCE_FIELD  uff_table
+        &END PARAMETER
+      &END DFTB
+    &END QS
+
+    &SCF
+      MAX_SCF   ${max_scf}
+      EPS_SCF   ${eps_scf}
+      SCF_GUESS restart
+      ADDED_MOS ${added_mos}
+      &SMEAR
+         ELECTRONIC_TEMPERATURE [K] ${temperature}
+         METHOD fermi_dirac
+      &END SMEAR
+      &MIXING
+         METHOD DIRECT_P_MIXING
+         NMIXING 500
+         ALPHA   0.01
+      &END MIXING
+      &PRINT
+         &RESTART
+            FILENAME RESTART_0
+         &END RESTART
+      &END PRINT
+    &END SCF
+
+    &POISSON
+      &EWALD
+       EWALD_TYPE SPME
+       GMAX 51
+       O_SPLINE 5
+      &END EWALD
+    &END POISSON
+
+    &PRINT
+        &AO_MATRICES
+            FILENAME    zang-electrode
+            KOHN_SHAM_MATRIX    .TRUE.
+        &END AO_MATRICES
+    &END PRINT
+
+  &END DFT
+
+  &SUBSYS
+    &CELL
+      ABC    ${lx} ${ly} 72.0
+      PERIODIC xyz
+    &END CELL
+    &COORD
+Au        0.0         0.0      -12.0   
+Au        0.0         0.0       -9.0   
+Au        0.0         0.0       -6.0   
+Au        0.0         0.0       -3.0   
+Au        0.0         0.0        0.0   
+Au        0.0         0.0        3.0   
+Au        0.0         0.0        6.0   
+Au        0.0         0.0        9.0   
+Au        0.0         0.0       12.0   
+Au        0.0         0.0       15.0   
+Au        0.0         0.0       18.0   
+Au        0.0         0.0       21.0   
+Au        0.0         0.0       24.0       
+Au        0.0         0.0       27.0       
+Au        0.0         0.0       30.0       
+Au        0.0         0.0       33.0       
+Au        0.0         0.0       36.0       
+Au        0.0         0.0       39.0       
+Au        0.0         0.0       42.0       
+Au        0.0         0.0       45.0       
+Au        0.0         0.0       48.0       
+Au        0.0         0.0       51.0       
+Au        0.0         0.0       54.0       
+Au        0.0         0.0       57.0       
+    &END COORD
+  &END SUBSYS
+&END FORCE_EVAL
