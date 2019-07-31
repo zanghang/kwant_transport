@@ -150,7 +150,7 @@ def read_coord(filename_hami,filename_coord):
 
 #===============================================================================================
 
-def kwant_build(device_hami,device_coord,electrode_hami,electrode_coord,threshold,general_lattice,general_device_del,general_device_lead,general_electrode_basis_num,general_current_density_energy):
+def kwant_build(device_hami,device_coord,electrode_hami,electrode_coord,threshold,general_lattice,general_device_del,general_device_lead,general_electrode_basis_num,general_density_energy):
     basis_sites = []
 
     general_device_del = int(general_device_del)
@@ -232,7 +232,7 @@ def kwant_build(device_hami,device_coord,electrode_hami,electrode_coord,threshol
 #    for i in range(site_number):
 #        print(tmp1[0][i][0])
 
-    wf = kwant.wave_function(syst,energy=general_current_density_energy)
+    wf = kwant.wave_function(syst,energy=general_density_energy)
 
     density = kwant.operator.Density(syst,where=[syst.sites[tmp1[0][i][0]] for i in range(site_number)])
      
@@ -256,5 +256,5 @@ kwant_build(
     general_device_del = 1800,
     general_device_lead = 1800,
     general_electrode_basis_num = 7200,
-    general_current_density_energy = -0.11,
+    general_density_energy = -0.11,
     )
